@@ -1,16 +1,22 @@
 <?php
 session_start();
+$host="localhost";
+$user="root";
+$password="";
+$db="fwm";
+$dbcon=@mysqli_connect($host,$user, $password, $db);
+$email=$_SESSION['email'];
 if(isset($_POST['submit'])){
 	$num=$_POST['number'];
 	$add=$_POST['address'];
 	if($num){
-		$sql="UPDATE `schooldetails` SET `noofstudents` ='$num'";
-		$res=mysqli_query($dbcon,$sql);
+		$sql="UPDATE schooldetails SET noofstudents ='$num' where email='$email'";
+		$res=@mysqli_query($dbcon,$sql);
 		if(!$res){echo 'Error in updating noofstudents';}
 	}
 	if($add){
-		$sql="UPDATE `schools` SET `address` ='$add'";
-		$res=mysqli_query($dbcon,$sql);
+		$sql="UPDATE schools SET address ='$add' where email='$email'";
+		$res=@mysqli_query($dbcon,$sql);
 		if(!$res){echo 'Error in updating address';}
 	}
 }
@@ -22,7 +28,6 @@ if(isset($_POST['submit'])){
 function func(val){
 	if(val=="number"){
 	if(document.getElementById("number").type=="hidden"){
-		document.getElementById("address").type="hidden";
 		document.getElementById("number").type="text;"
 	}
 	else{
@@ -32,7 +37,7 @@ function func(val){
 	else{
 	if(document.getElementById("address").type=="hidden"){
 		document.getElementById("address").type="text;"
-		document.getElementById("number").type="hidden";
+		
 	}
 	else{
 		document.getElementById("address").type="hidden";

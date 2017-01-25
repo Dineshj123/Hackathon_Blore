@@ -1,16 +1,23 @@
 <?php
 session_start();
+$host="localhost";
+$user="root";
+$password="";
+$db="fwm";
+$dbcon=@mysqli_connect($host,$user, $password, $db);
 if(isset($_POST['submit'])){
 	$email=$_POST['email'];
 	$pwd=$_POST['pwd'];
-	$sql=" SELECT * FROM `users` WHERE usersname='$uname' && password='$pwds'  ";
+	$pwds=md5(sha1($pwd));
+	$sql=" SELECT * FROM `schools` WHERE email='$email' && password='$pwds'  ";
 	$res=mysqli_query($dbcon,$sql);
-	$user=mysqli_fetch_array($res);
+	$user=@mysqli_fetch_array($res);
 	if($user!=0){
-		header('Location : index.php');
+		$_SESSION['email']=$email;
+		header('Location:index.php');
 	}
 	else{
-		echo 'Wrong Credentials';
+		echo "Wrong Credentials";
 	}
 }
 
